@@ -1,15 +1,5 @@
 // We use mixins instead of placeholders as placeholders would combine the selectors when @extend-ed
 
-@mixin form-floating-active-input-styles() {
-  padding-top: $form-floating-input-padding-t;
-  padding-bottom: $form-floating-input-padding-b;
-}
-
-@mixin form-floating-active-label-styles() {
-  opacity: $form-floating-label-opacity;
-  transform: $form-floating-label-transform;
-}
-
 .form-floating {
   position: relative;
 
@@ -46,6 +36,10 @@
       color: transparent;
     }
 
+    &:focus::placeholder {
+      color: $input-placeholder-color;
+    }
+
     &:focus,
     &:not(:placeholder-shown) {
       @include form-floating-active-input-styles();
@@ -67,7 +61,6 @@
   > .form-select {
     ~ label {
       @include form-floating-active-label-styles();
-      color: rgba(var(--#{$prefix}body-color-rgb), #{$form-floating-label-opacity});
 
       &::after {
         position: absolute;
@@ -85,7 +78,6 @@
   > .form-control:-webkit-autofill {
     ~ label {
       @include form-floating-active-label-styles();
-      color: rgba(var(--#{$prefix}body-color-rgb), #{$form-floating-label-opacity});
     }
   }
 
@@ -106,18 +98,19 @@
 
 // Todo in v6: Consider combining this with the .form-control-plaintext rules to reduce some CSS?
 .form-floating-always {
-  > .form-control {
-    @include form-floating-active-input-styles();
+  &.form-floating,
+  .form-floating {
+    .form-control {
+      @include form-floating-active-input-styles();
 
-    &::placeholder {
-      color: $input-color;
+      &::placeholder,
+      &:focus::placeholder {
+        color: $input-placeholder-color;
+      }
     }
-    &:focus::placeholder {
-      color: $input-placeholder-color;
-    }
-  }
 
-  > label {
-    @include form-floating-active-label-styles();
+    label {
+      @include form-floating-active-label-styles();
+    }
   }
 }
